@@ -4,6 +4,7 @@ import configuration from './config/configuration.js';
 import { validate } from './config/validation.js';
 import { DatabaseModule } from './database/database.module.js';
 import { HealthModule } from './health/health.module.js';
+import { TripsModule } from './trips/trips.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { HealthModule } from './health/health.module.js';
     }),
     DatabaseModule,
     HealthModule,
+    TripsModule,
   ],
 })
 export class AppModule {}

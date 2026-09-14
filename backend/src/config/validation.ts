@@ -9,6 +9,7 @@ export const envSchema = Joi.object({
   MONGODB_URI: Joi.string()
     .uri({ scheme: ['mongodb', 'mongodb+srv'] })
     .required(),
+  GEMINI_API_KEY: Joi.string().allow('').optional(),
 });
 
 export function validate(config: Record<string, unknown>): Record<string, unknown> {

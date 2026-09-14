@@ -52,6 +52,23 @@ domains:
       - liveness
       - readiness
       - ping
+  trips:
+    path: .ai/domains/trips/index.yaml
+    description: Trip sessions, slot-filling, questionnaire generation, and state persistence
+    triggers:
+      - trips
+      - trip session
+      - questionnaire
+      - slot filling
+      - trip state
+  gemini:
+    path: .ai/domains/gemini/index.yaml
+    description: Gemini AI service for entity extraction and multi-turn planning
+    triggers:
+      - gemini
+      - llm
+      - entity extraction
+      - ai
 
 generated:
   structure:

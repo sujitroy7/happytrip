@@ -1,0 +1,24 @@
+name: gemini-overview
+description: Gemini AI service design, structured extraction schema, and fallback behavior.
+
+when_to_use:
+  - working on AI extraction or conversation processing
+  - modifying GoogleGenAI configuration or model parameters
+
+references:
+  - src/gemini/gemini.service.ts
+  - src/gemini/gemini.module.ts
+  - src/config/configuration.ts
+  - src/config/validation.ts
+
+rules:
+  - Uses @google/genai SDK with model 'gemini-2.5-flash'.
+  - Outputs structured JSON matching ExtractedTripData schema.
+  - Takes userMessage, currentState, and conversationHistory to maintain multi-turn context.
+  - Provides a rule-based heuristic extraction fallback when GEMINI_API_KEY is not configured.
+  - API key is configured via GEMINI_API_KEY and accessed through ConfigService.
+
+related_contexts:
+  - domains.trips
+  - rules.coding
+  - rules.architecture

@@ -3,6 +3,7 @@ export interface AppConfig {
   port: number;
   frontendUrl: string;
   mongodbUri: string;
+  geminiApiKey: string;
 }
 
 export default (): { app: AppConfig } => ({
@@ -12,5 +13,6 @@ export default (): { app: AppConfig } => ({
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
     mongodbUri:
       process.env.MONGODB_URI || 'mongodb://localhost:27017/happytrip',
+    geminiApiKey: process.env.GEMINI_API_KEY || '',
   },
 });

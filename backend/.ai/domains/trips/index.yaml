@@ -1,0 +1,10 @@
+domain: trips
+description: Trip sessions, conversational slot-filling, questionnaire generation, and state persistence.
+
+contexts:
+  overview:
+    path: .ai/domains/trips/overview.yaml
+    use_when:
+      - creating or updating trip sessions
+      - working with TripState and questionnaire generation
+      - handling /api/trips/chat or /api/trips/:id endpoints
