@@ -1,0 +1,23 @@
+source_root: src
+test_root: test
+
+directories:
+  src/config:
+    purpose: Environment variable validation (Joi) and configuration loading
+    files:
+      - src/config/configuration.ts
+      - src/config/validation.ts
+  src/database:
+    purpose: Database connection provider (Mongoose)
+    files:
+      - src/database/database.module.ts
+  src/health:
+    purpose: Service liveness and database connection readiness checking
+    files:
+      - src/health/health.module.ts
+      - src/health/health.controller.ts
+      - src/health/health.service.ts
+      - src/health/health.controller.spec.ts
+  src/common:
+    purpose: Shared utilities, guards, decorators, filters, interceptors, pipes
+    status: scaffolded

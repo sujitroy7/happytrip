@@ -1,0 +1,19 @@
+name: testing-rules
+description: Unit and end-to-end testing conventions and commands.
+
+when_to_use:
+  - writing or running tests
+  - configuring test runners
+
+rules:
+  - Vitest is the test runner (not Jest).
+  - Unit tests use `*.spec.ts` colocated with the code under test (run via `npm test`).
+  - E2E tests live in `test/` directory using `*.e2e-spec.ts` (run via `npm run test:e2e`).
+  - Vitest configuration is at `vitest.config.ts` and `vitest.config.e2e.ts`.
+  - Use `@nestjs/testing` Test.createTestingModule() to mock dependencies in unit tests.
+
+references:
+  - vitest.config.ts
+  - vitest.config.e2e.ts
+  - src/health/health.controller.spec.ts
+  - test/app.e2e-spec.ts
