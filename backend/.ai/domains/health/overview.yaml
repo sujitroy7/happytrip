@@ -1,0 +1,22 @@
+name: health-overview
+description: Health endpoint design, response format, and MongoDB connection status.
+
+when_to_use:
+  - adding or altering health check endpoints
+  - querying health status or readiness
+
+references:
+  - src/health/health.controller.ts
+  - src/health/health.service.ts
+  - src/health/health.module.ts
+  - src/health/health.controller.spec.ts
+
+rules:
+  - Route is GET /api/health (controller @Controller('health') with global prefix 'api').
+  - Response contains { status: 'ok' | 'error', database: 'connected' | 'disconnected' | 'connecting' | 'disconnecting' }.
+  - Inspects Mongoose connection.readyState directly via @InjectConnection() in HealthService.
+  - Return plain HealthCheckResult object, don't throw for disconnected database state.
+
+related_contexts:
+  - rules.coding
+  - rules.architecture

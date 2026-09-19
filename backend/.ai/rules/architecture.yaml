@@ -1,0 +1,20 @@
+name: architecture-rules
+description: System architecture, bootstrapping, configuration, and layer boundaries.
+
+when_to_use:
+  - adding or altering modules, global settings, or configuration
+  - establishing layer relationships
+
+rules:
+  - Entry point is `src/main.ts` configuring global prefix `api` and CORS using ConfigService.
+  - Root module is `src/app.module.ts` loading ConfigModule globally, DatabaseModule, and feature modules.
+  - Environment variables must be validated with Joi schema in `src/config/validation.ts` and mapped in `src/config/configuration.ts`.
+  - Database access is managed via `@nestjs/mongoose` encapsulated in `src/database/database.module.ts`.
+  - Reusable utilities, decorators, guards, filters, interceptors, and pipes belong in `src/common/`.
+
+references:
+  - src/main.ts
+  - src/app.module.ts
+  - src/config/
+  - src/database/database.module.ts
+  - src/common/

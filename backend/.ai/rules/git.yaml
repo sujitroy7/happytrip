@@ -1,0 +1,15 @@
+name: git-rules
+description: Git version control and context synchronization rules.
+
+when_to_use:
+  - creating commits or working with branches
+  - finishing a development task
+
+rules:
+  - Keep commits focused and atomic with descriptive imperative commit messages.
+  - The `.ai/` directory must be committed to Git. Do not ignore `.ai/` in `.gitignore`.
+  - Never maintain per-task or per-branch context storage inside `.ai/`.
+  - When completing a task that changes project knowledge, commit `.ai` updates together with the corresponding code change.
+
+references:
+  - package.json

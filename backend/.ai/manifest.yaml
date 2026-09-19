@@ -1,0 +1,80 @@
+project:
+  name: happytrip-backend
+  type: service
+  stack:
+    runtime: Node.js (ESM)
+    framework: NestJS 12
+    language: TypeScript 6
+    database: MongoDB (Mongoose 9)
+    testing: Vitest 4
+    linter: oxlint
+
+rules:
+  coding:
+    path: .ai/rules/coding.yaml
+    description: TypeScript, ESM, and NestJS coding conventions
+    triggers:
+      - coding style
+      - typescript
+      - naming
+      - esm imports
+  architecture:
+    path: .ai/rules/architecture.yaml
+    description: Core architecture layers and dependency rules
+    triggers:
+      - architecture
+      - layers
+      - modules
+      - config
+  testing:
+    path: .ai/rules/testing.yaml
+    description: Testing patterns, test runners, and commands
+    triggers:
+      - test
+      - vitest
+      - unit test
+      - e2e
+  git:
+    path: .ai/rules/git.yaml
+    description: Git workflow and context commit conventions
+    triggers:
+      - git
+      - commit
+      - branch
+
+domains:
+  health:
+    path: .ai/domains/health/index.yaml
+    description: Service health checking and database connectivity readiness
+    triggers:
+      - health
+      - health check
+      - liveness
+      - readiness
+      - ping
+  trips:
+    path: .ai/domains/trips/index.yaml
+    description: Trip sessions, slot-filling, questionnaire generation, and state persistence
+    triggers:
+      - trips
+      - trip session
+      - questionnaire
+      - slot filling
+      - trip state
+  gemini:
+    path: .ai/domains/gemini/index.yaml
+    description: Gemini AI service for entity extraction and multi-turn planning
+    triggers:
+      - gemini
+      - llm
+      - entity extraction
+      - ai
+
+generated:
+  structure:
+    path: .ai/generated/structure.yaml
+    description: Map of high-level source directories and module locations
+    triggers:
+      - directory structure
+      - find module
+      - code layout

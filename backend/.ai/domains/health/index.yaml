@@ -1,0 +1,10 @@
+domain: health
+description: Service health checking and MongoDB connection state inspection.
+
+contexts:
+  overview:
+    path: .ai/domains/health/overview.yaml
+    use_when:
+      - checking service health status
+      - modifying health check endpoints
+      - inspecting MongoDB connection readiness

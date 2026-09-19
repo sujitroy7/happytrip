@@ -1,0 +1,10 @@
+domain: gemini
+description: Gemini AI integration for entity extraction and conversational itinerary planning.
+
+contexts:
+  overview:
+    path: .ai/domains/gemini/overview.yaml
+    use_when:
+      - configuring or calling Gemini models
+      - modifying entity extraction prompts or schemas
+      - managing API keys and fallback behavior

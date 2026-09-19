@@ -1,0 +1,20 @@
+name: coding-rules
+description: TypeScript and NestJS code style and module standards.
+
+when_to_use:
+  - writing or refactoring TypeScript code
+  - importing local modules or packages
+  - formatting and linting
+
+rules:
+  - Modules are native Node ESM ("type": "module"); all local relative imports MUST include the `.js` extension (e.g. `import ... from './health.service.js'`).
+  - Use TypeScript strict mode. Avoid `any` where possible.
+  - Linting uses oxlint (`npm run lint`), formatting uses Prettier (`npm run format`).
+  - Controllers handle HTTP transport only; business logic resides in Services.
+  - Inject dependencies via standard NestJS constructor injection.
+
+references:
+  - package.json
+  - tsconfig.json
+  - oxlint.json
+  - .prettierrc
