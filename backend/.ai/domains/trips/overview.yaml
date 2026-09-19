@@ -11,17 +11,21 @@ references:
   - src/trips/trips.service.ts
   - src/trips/trips.module.ts
   - src/trips/trips.types.ts
+  - src/trips/trips-queue.service.ts
   - src/trips/question-generator.ts
   - src/trips/schemas/trip-state.schema.ts
   - src/trips/schemas/trip-session.schema.ts
   - src/trips/dto/chat-trip.dto.ts
+  - src/trips/dto/initiate-trip.dto.ts
+  - src/trips/dto/generate-trip-plan.dto.ts
   - src/trips/trips.service.spec.ts
 
 rules:
-  - Endpoints served under /api/trips (POST /chat, GET /:id).
+  - Endpoints served under /api/trips (POST /initiate, GET /:id/form, POST /:id/generate, POST /chat, GET /:id).
   - State follows TripState schema (origin, destination, start_date, duration_days, traveler_type, traveler_count, budget, food_preference, transport_preference, interests, accommodation_preference).
   - Session status transitions: 'collecting_info' -> 'ready' -> 'planning' -> 'completed'.
-  - QuestionGenerator detects missing and non-skipped fields to dynamically produce questionnaire items.
+  - QuestionGenerator produces dynamic form schemas with prefilled values for extracted fields and widget types (single_option, multiple_option, number_range_slider, input_field, text_area).
+  - POST /:id/generate updates trip state and enqueues planning job via TripsQueueService (RabbitMQ queue: trip.planning.queue).
   - Skipped fields are remembered in session.skipped_fields so they are not re-prompted.
   - Conversational history is preserved in session.messages and sent to Gemini for multi-turn extraction.
 

@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
@@ -24,6 +25,18 @@ async function bootstrap() {
     }),
   );
 
+  const config = new DocumentBuilder()
+    .setTitle('HappyTrip API')
+    .setDescription('HappyTrip Backend REST API documentation and interactive test runner')
+    .setVersion('1.0')
+    .addTag('trips', 'Trip planning and conversational session endpoints')
+    .addTag('health', 'Health check endpoints')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
   await app.listen(port);
 }
 await bootstrap();
+

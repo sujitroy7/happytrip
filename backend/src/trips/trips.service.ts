@@ -5,8 +5,14 @@ import { TripSession, type TripSessionDocument } from './schemas/trip-session.sc
 import { TripState } from './schemas/trip-state.schema.js';
 import { GeminiService } from '../gemini/gemini.service.js';
 import { QuestionGenerator } from './question-generator.js';
+import { TripsQueueService } from './trips-queue.service.js';
 import type { ChatTripDto } from './dto/chat-trip.dto.js';
-import type { ChatTripResponse } from './trips.types.js';
+import type {
+  ChatTripResponse,
+  DynamicFormResponse,
+  GeneratePlanResponse,
+  InitiateTripResponse,
+} from './trips.types.js';
 
 @Injectable()
 export class TripsService {
@@ -14,7 +20,9 @@ export class TripsService {
     @InjectModel(TripSession.name)
     private readonly tripSessionModel: Model<TripSessionDocument>,
     private readonly geminiService: GeminiService,
+    private readonly tripsQueueService: TripsQueueService,
   ) {}
+
 
   async handleChat(dto: ChatTripDto): Promise<ChatTripResponse> {
     let session: TripSessionDocument;
@@ -112,6 +120,90 @@ export class TripsService {
     }
     return session;
   }
+
+  /**
+   * Step 1: Initiates a trip from natural language prompt, extracts entities,
+   * creates a session, and returns the sessionId.
+   */
+  async initiateTrip(prompt: string): Promise<InitiateTripResponse> {
+    const initialSession = new this.tripSessionModel({
+      status: 'collecting_info',
+      state: new TripState(),
+      skipped_fields: [],
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+          timestamp: new Date(),
+        },
+      ],
+    });
+
+    // Extract entities using Gemini LLM
+    const extracted = await this.geminiService.extractTripEntities(
+      prompt,
+      initialSession.state as Partial<TripState>,
+      initialSession.messages,
+    );
+
+    this.mergeState(initialSession.state, extracted);
+
+    initialSession.markModified('state');
+    initialSession.markModified('messages');
+    await initialSession.save();
+
+    return {
+      sessionId: initialSession._id.toString(),
+      status: initialSession.status,
+      extracted: initialSession.state as unknown as Record<string, any>,
+    };
+  }
+
+  /**
+   * Step 2: Returns the complete dynamic form schema with prefilled values
+   * based on extracted/accumulated session state.
+   */
+  async getDynamicForm(sessionId: string): Promise<DynamicFormResponse> {
+    const session = await this.getSession(sessionId);
+    const questions = QuestionGenerator.generateDynamicForm(session.state);
+
+    return {
+      sessionId: session._id.toString(),
+      status: session.status,
+      questions,
+    };
+  }
+
+  /**
+   * Step 3: Accepts the finalized answers, updates state, sets status to planning,
+   * and creates/enqueues a RabbitMQ job (mocked).
+   */
+  async generatePlan(sessionId: string, answers?: Record<string, any>): Promise<GeneratePlanResponse> {
+    const session = await this.getSession(sessionId);
+
+    if (answers && Object.keys(answers).length > 0) {
+      this.mergeState(session.state, answers);
+    }
+
+    session.status = 'planning';
+    session.markModified('state');
+
+    // Enqueue job to RabbitMQ (mock)
+    const job = await this.tripsQueueService.enqueuePlanJob(
+      sessionId,
+      session.state as unknown as Record<string, any>,
+    );
+
+    await session.save();
+
+    return {
+      sessionId: session._id.toString(),
+      jobId: job.jobId,
+      status: 'queued',
+      message: 'Trip planning job has been enqueued to RabbitMQ.',
+    };
+  }
+
 
   private mergeState(target: TripState, incoming: Record<string, any>): void {
     if (incoming.origin !== undefined && incoming.origin !== null) {
