@@ -29,9 +29,13 @@ const DAYS = [
 export function CuratedItineraryView({
   onCustomizeClick,
   destination = "Bali",
+  source = "London (LHR)",
+  budget = "$18,000 / guest (Imperial Bespoke)",
 }: {
   onCustomizeClick?: () => void
   destination?: string
+  source?: string
+  budget?: string
 }) {
   const [selectedDay, setSelectedDay] = useState(1)
   const [isSaved, setIsSaved] = useState(false)
@@ -55,7 +59,7 @@ export function CuratedItineraryView({
           Your {destination} Escape
         </h1>
         <p className="font-display text-sm sm:text-base italic text-primary font-normal tracking-wide">
-          5 Days • Balanced Cadence • Sanctuary &amp; Gastronomy
+          {source} ➔ {destination} • 5-Day Bespoke Cadence
         </p>
       </section>
 
@@ -118,8 +122,12 @@ export function CuratedItineraryView({
               Budget Pool
             </span>
           </div>
-          <span className="font-display text-xl text-foreground mt-0.5">₹48k – 58k</span>
-          <span className="text-[11px] text-muted-foreground">Est. per guest total</span>
+          <span className="font-display text-lg text-foreground mt-0.5 truncate">
+            {budget.split(" (")[0] || "$18,000 / guest"}
+          </span>
+          <span className="text-[11px] text-muted-foreground truncate">
+            {budget.includes("(") ? budget.split("(")[1].replace(")", "") : "Bespoke Sovereign"}
+          </span>
         </div>
 
         {/* Tile 3 */}

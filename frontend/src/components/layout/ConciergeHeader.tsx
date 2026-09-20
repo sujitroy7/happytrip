@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
 import { HappyTripLogo } from "../home/HappyTripLogo"
+import { ThemeToggle } from "../ui/ThemeToggle"
 
 export interface ConciergeHeaderProps extends React.HTMLAttributes<HTMLElement> {
   brandName?: string
@@ -28,7 +29,10 @@ export function ConciergeHeader({
       )}
       {...props}
     >
-      <div className="pointer-events-auto w-full max-w-md h-16 sm:h-20 flex items-center justify-between rounded-full bg-card/75 backdrop-blur-2xl border border-border/60 shadow-[0_12px_32px_rgba(0,0,0,0.55)] px-4 sm:px-5 my-2">
+      <div className="relative overflow-hidden pointer-events-auto w-full max-w-md h-16 sm:h-20 flex items-center justify-between rounded-full luxury-glass px-4 sm:px-5 my-2 transition-all duration-300">
+        {/* Specular glass reflection sheen */}
+        <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 dark:from-white/10 to-transparent pointer-events-none rounded-t-full" />
+        
         {/* Left: Brand Monogram & Title */}
         <div className="flex items-center gap-3">
           {/* Custom HappyTrip Luxury Logo */}
@@ -50,19 +54,22 @@ export function ConciergeHeader({
           </div>
         </div>
 
-        {/* Right: Gilded Profile Avatar with Golden Halo Ring */}
-        <button
-          type="button"
-          onClick={onProfileClick}
-          aria-label="Member Profile"
-          className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-primary via-accent to-primary/60 shadow-[0_0_14px_rgba(242,202,80,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
-        >
-          <img
-            src={avatarUrl}
-            alt="Profile"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
-          />
-        </button>
+        {/* Right: Theme Toggle & Gilded Profile Avatar */}
+        <div className="flex items-center gap-2.5">
+          <ThemeToggle size="sm" />
+          <button
+            type="button"
+            onClick={onProfileClick}
+            aria-label="Member Profile"
+            className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-primary via-accent to-primary/60 shadow-[0_0_14px_rgba(242,202,80,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+          >
+            <img
+              src={avatarUrl}
+              alt="Profile"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover"
+            />
+          </button>
+        </div>
       </div>
     </header>
   )

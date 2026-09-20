@@ -10,13 +10,17 @@ import { AtmosphericHero } from "./components/home/AtmosphericHero"
 import { LoginPage } from "./components/auth/LoginPage"
 import { LuxuryRouteMap } from "./components/map/LuxuryRouteMap"
 import { ExploreDestinations } from "./components/explore/ExploreDestinations"
-import { LogOut, KeyRound } from "lucide-react"
+import { LogOut, KeyRound, Sun, Moon } from "lucide-react"
+import { useTheme } from "./lib/theme-context"
 
 export default function App() {
+  const { theme, setTheme } = useTheme()
   const [activeTab, setActiveTab] = useState<NavTab>("home")
   const [isCalibrating, setIsCalibrating] = useState(false)
   const [isCalibratingAura, setIsCalibratingAura] = useState(false)
   const [destination, setDestination] = useState("Bali")
+  const [source, setSource] = useState("London (LHR)")
+  const [budget, setBudget] = useState("$18,000 / guest (Imperial Bespoke)")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
@@ -49,12 +53,15 @@ export default function App() {
     return (
       <AuraConciergeCalibration
         destination={destination}
+        initialSource={source}
         onBack={() => {
           setIsCalibratingAura(false)
           window.scrollTo({ top: 0, behavior: "smooth" })
         }}
         onSynthesize={(calibratedData) => {
           setDestination(calibratedData.destination)
+          if (calibratedData.source) setSource(calibratedData.source)
+          if (calibratedData.budget) setBudget(calibratedData.budget)
           setIsCalibratingAura(false)
           setActiveTab("trips")
           window.scrollTo({ top: 0, behavior: "smooth" })
@@ -125,6 +132,8 @@ export default function App() {
             ) : (
               <CuratedItineraryView
                 destination={destination}
+                source={source}
+                budget={budget}
                 onCustomizeClick={() => setIsCalibratingAura(true)}
               />
             )}
@@ -178,6 +187,35 @@ export default function App() {
                 <div className="flex items-center justify-between text-muted-foreground">
                   <span>Assigned Purser:</span>
                   <span className="text-primary font-medium">Julian de Saint-Germain</span>
+                </div>
+                <div className="flex items-center justify-between pt-1 border-t border-border/30">
+                  <span className="text-muted-foreground">Atelier Theme:</span>
+                  <div className="flex items-center gap-1 bg-card/60 p-0.5 rounded-full border border-border/40">
+                    <button
+                      type="button"
+                      onClick={() => setTheme("light")}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
+                        theme === "light"
+                          ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <Sun className="w-3 h-3" />
+                      <span>Alabaster</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTheme("dark")}
+                      className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
+                        theme === "dark"
+                          ? "bg-primary text-primary-foreground font-semibold shadow-sm"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <Moon className="w-3 h-3" />
+                      <span>Noir</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 

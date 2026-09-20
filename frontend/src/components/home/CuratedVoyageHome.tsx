@@ -144,15 +144,15 @@ export function CuratedVoyageHome({
       <div className="relative w-full">
         <div
           aria-hidden="true"
-          className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-primary/30 via-accent/15 to-transparent blur-md opacity-80 animate-pulse pointer-events-none"
+          className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-primary/20 via-accent/10 to-transparent blur-md opacity-30 dark:opacity-80 animate-pulse pointer-events-none"
         />
-        <div className="relative rounded-2xl bg-card/85 backdrop-blur-2xl p-4 sm:p-5 border border-border/60 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.7)] flex flex-col gap-4">
+        <div className="relative rounded-2xl bg-card/90 backdrop-blur-xl p-4 sm:p-5 border border-border/60 shadow-[0_12px_32px_-6px_rgba(17,32,25,0.08)] dark:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.7)] flex flex-col gap-4">
           {/* Card Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-primary">
               <Sparkles className="w-5 h-5 text-primary" />
               <span className="text-xs font-semibold tracking-wide">
-                AURA Bespoke Atelier
+                HappyTrip Bespoke Atelier
               </span>
             </div>
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 border border-border/40">
@@ -327,7 +327,7 @@ export function CuratedVoyageHome({
             <div
               key={trip.id}
               onClick={() => onTripSelect?.(trip.id)}
-              className="snap-start shrink-0 w-[285px] sm:w-[300px] rounded-2xl bg-card/85 border border-border/60 flex flex-col overflow-hidden shadow-[0_16px_32px_rgba(0,0,0,0.45)] group cursor-pointer hover:border-primary/40 transition-colors"
+              className="snap-start shrink-0 w-[285px] sm:w-[300px] rounded-2xl bg-card border border-border/60 flex flex-col overflow-hidden shadow-[0_8px_24px_-6px_rgba(17,32,25,0.07)] dark:shadow-[0_16px_32px_rgba(0,0,0,0.55)] group cursor-pointer hover:border-primary/40 hover:shadow-md transition-all"
             >
               {/* Image Preview Container */}
               <div className="relative w-full h-44 overflow-hidden">
@@ -387,7 +387,7 @@ export function CuratedVoyageHome({
       </div>
 
       {/* 5. Aviation Standby Banner */}
-      <div className="rounded-2xl bg-card/75 border border-border/60 p-4 flex items-center justify-between shadow-lg backdrop-blur-md">
+      <div className="rounded-2xl bg-card border border-border/60 p-4 flex items-center justify-between shadow-[0_6px_20px_-4px_rgba(17,32,25,0.06)] dark:shadow-lg backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20 shrink-0">
             <Plane className="w-5 h-5" />

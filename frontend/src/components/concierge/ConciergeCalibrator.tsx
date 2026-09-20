@@ -49,7 +49,7 @@ export function ConciergeCalibrator() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
             </span>
             <span className="font-sans text-[10px] uppercase tracking-widest text-primary font-semibold">
-              Aura Synthesis Active
+              HappyTrip Synthesis Active
             </span>
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -84,7 +84,7 @@ export function ConciergeCalibrator() {
                 <Sparkles className="w-3 h-3" />
               </div>
               <span className="font-display text-sm text-primary tracking-wide">
-                Aura Concierge
+                HappyTrip Concierge
               </span>
               <span className="text-[9px] uppercase tracking-widest text-secondary bg-secondary/15 px-2 py-0.5 rounded-full ml-1 font-semibold">
                 Calibrating
@@ -391,7 +391,7 @@ export function ConciergeCalibrator() {
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-[9px] uppercase tracking-wider text-primary font-semibold">
-                  Aura Proactive Match
+                  HappyTrip Proactive Match
                 </span>
                 <span className="font-display text-xs text-foreground truncate">
                   Uluwatu Sunset &amp; Jimbaran Seafood Lounge

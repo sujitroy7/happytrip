@@ -38,8 +38,10 @@ export function BottomNav({
     >
       <nav
         aria-label="Concierge Navigation"
-        className="pointer-events-auto flex items-center justify-between w-full max-w-md h-16 sm:h-18 px-4 sm:px-6 rounded-full bg-card/85 backdrop-blur-2xl border border-border/60 shadow-[0_16px_36px_-8px_rgba(0,0,0,0.7)]"
+        className="relative overflow-hidden pointer-events-auto flex items-center justify-between w-full max-w-md h-16 sm:h-18 px-4 sm:px-6 rounded-full luxury-glass transition-all duration-300"
       >
+        {/* Specular glass reflection sheen */}
+        <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 dark:from-white/10 to-transparent pointer-events-none rounded-t-full" />
         {NAV_ITEMS.map((item) => {
           const Icon = item.icon
           const isActive = activeTab === item.id
