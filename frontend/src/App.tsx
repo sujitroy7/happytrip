@@ -4,6 +4,7 @@ import { BottomNav, type NavTab } from "./components/layout/BottomNav"
 import { CuratedVoyageHome } from "./components/home/CuratedVoyageHome"
 import { CuratedItineraryView } from "./components/trips/CuratedItineraryView"
 import { ConciergeCalibrator } from "./components/concierge/ConciergeCalibrator"
+import { AuraConciergeCalibration } from "./components/concierge/AuraConciergeCalibration"
 import { FloatingInputPill } from "./components/concierge/FloatingInputPill"
 import { AtmosphericHero } from "./components/home/AtmosphericHero"
 import { LoginPage } from "./components/auth/LoginPage"
@@ -14,12 +15,15 @@ import { LogOut, KeyRound } from "lucide-react"
 export default function App() {
   const [activeTab, setActiveTab] = useState<NavTab>("home")
   const [isCalibrating, setIsCalibrating] = useState(false)
+  const [isCalibratingAura, setIsCalibratingAura] = useState(false)
+  const [destination, setDestination] = useState("Bali")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
   const handleTripSelect = () => {
     setActiveTab("trips")
     setIsCalibrating(false)
+    setIsCalibratingAura(false)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -38,6 +42,25 @@ export default function App() {
     setIsAuthenticated(true)
     setShowAuthModal(false)
     setActiveTab("profile")
+  }
+
+  // If AURA Concierge Calibration flow is active, render the dedicated luxury chat interface
+  if (isCalibratingAura) {
+    return (
+      <AuraConciergeCalibration
+        destination={destination}
+        onBack={() => {
+          setIsCalibratingAura(false)
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }}
+        onSynthesize={(calibratedData) => {
+          setDestination(calibratedData.destination)
+          setIsCalibratingAura(false)
+          setActiveTab("trips")
+          window.scrollTo({ top: 0, behavior: "smooth" })
+        }}
+      />
+    )
   }
 
   // If Auth Modal is active, render the dedicated Login Page
@@ -75,7 +98,17 @@ export default function App() {
       <main className="relative z-10 w-full flex-1 flex flex-col items-center">
         {/* 1. HOME TAB */}
         {activeTab === "home" && (
-          <CuratedVoyageHome onTripSelect={handleTripSelect} />
+          <CuratedVoyageHome
+            onTripSelect={(tripId) => {
+              setDestination(tripId === "kyoto" ? "Kyoto" : tripId === "amalfi" ? "Amalfi Coast" : "Bali")
+              handleTripSelect()
+            }}
+            onStartCalibration={(dest) => {
+              setDestination(dest)
+              setIsCalibratingAura(true)
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }}
+          />
         )}
 
         {/* 2. TRIPS TAB */}
@@ -91,7 +124,8 @@ export default function App() {
               </>
             ) : (
               <CuratedItineraryView
-                onCustomizeClick={() => setIsCalibrating(true)}
+                destination={destination}
+                onCustomizeClick={() => setIsCalibratingAura(true)}
               />
             )}
           </>

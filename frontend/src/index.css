@@ -20,21 +20,50 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  --color-surface: var(--surface);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-bright: var(--surface-bright);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-primary-container: var(--primary-container);
+  --color-primary-fixed: var(--primary-fixed);
+  --color-tertiary-fixed: var(--tertiary-fixed);
+  --color-outline-variant: var(--outline-variant);
+  --color-outline: var(--outline);
 }
 
 :root {
   --background: #f5f8f6;
   --foreground: #081611;
+  --surface: #f5f8f6;
+  --surface-container: #ffffff;
+  --surface-container-high: #eef3f0;
+  --surface-container-highest: #e2ece7;
+  --surface-container-low: #f9fbf9;
+  --surface-container-lowest: #ffffff;
+  --surface-bright: #ffffff;
+  --on-surface: #081611;
+  --on-surface-variant: #4a6358;
   --card: #ffffff;
   --card-foreground: #081611;
   --primary: #d4af37;
   --primary-foreground: #ffffff;
+  --primary-container: #d4af37;
+  --primary-fixed: #e9c349;
+  --tertiary-fixed: #e5c365;
   --secondary: #accebe;
   --secondary-foreground: #012016;
   --accent: #eecb6c;
   --accent-foreground: #241a00;
   --muted: #e6ede9;
   --muted-foreground: #4a6358;
+  --outline: #99907c;
+  --outline-variant: #d0ded6;
   --border: #d0ded6;
   --input: #d0ded6;
   --ring: #d4af37;
@@ -44,16 +73,30 @@
 .dark {
   --background: #081611;
   --foreground: #d6e6dd;
+  --surface: #081611;
+  --surface-container: #14221d;
+  --surface-container-high: #1f2d27;
+  --surface-container-highest: #293832;
+  --surface-container-low: #101e19;
+  --surface-container-lowest: #04110c;
+  --surface-bright: #2e3c36;
+  --on-surface: #d6e6dd;
+  --on-surface-variant: #d0c5af;
   --card: #14221d;
   --card-foreground: #d6e6dd;
   --primary: #f2ca50;
   --primary-foreground: #241a00;
+  --primary-container: #d4af37;
+  --primary-fixed: #ffe088;
+  --tertiary-fixed: #ffe08d;
   --secondary: #accebe;
   --secondary-foreground: #012016;
   --accent: #eecb6c;
   --accent-foreground: #241a00;
   --muted: #1a2c25;
   --muted-foreground: #9bbcad;
+  --outline: #99907c;
+  --outline-variant: #4d4635;
   --border: rgba(208, 197, 175, 0.15);
   --input: rgba(208, 197, 175, 0.2);
   --ring: #f2ca50;
@@ -103,3 +146,86 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--primary);
   color: var(--primary-foreground);
 }
+
+/* Design Tokens & Spacing Helpers */
+.font-title-editorial {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.font-headline-sm {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.font-headline-md {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.font-headline-lg {
+  font-family: "Playfair Display", Georgia, serif;
+}
+.font-body-md {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+.font-body-sm {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+.font-label-caps {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  letter-spacing: 0.14em;
+}
+.font-label-md {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
+
+.px-margin {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.p-space-md {
+  padding: 1rem;
+}
+.py-space-xs {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-space-sm {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.px-space-md {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-space-xs {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.pt-space-xs {
+  padding-top: 0.25rem;
+}
+.pb-space-sm {
+  padding-bottom: 0.5rem;
+}
+.pt-space-sm {
+  padding-top: 0.5rem;
+}
+.my-space-xs {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+.gap-space-xs {
+  gap: 0.25rem;
+}
+.gap-space-sm {
+  gap: 0.5rem;
+}
+.gap-space-md {
+  gap: 1rem;
+}
+.gap-space-lg {
+  gap: 1.5rem;
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+

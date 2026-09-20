@@ -54,10 +54,25 @@ const RECENT_TRIPS = [
   },
 ]
 
-export function CuratedVoyageHome({ onTripSelect }: { onTripSelect?: (tripId: string) => void }) {
+export function CuratedVoyageHome({
+  onTripSelect,
+  onStartCalibration,
+}: {
+  onTripSelect?: (tripId: string) => void
+  onStartCalibration?: (destination: string) => void
+}) {
+  const [destination, setDestination] = useState("")
   const [prompt, setPrompt] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [isCurating, setIsCurating] = useState(false)
+
+  const POPULAR_DESTINATIONS = [
+    "Bali, Indonesia",
+    "Kyoto, Japan",
+    "Amalfi Coast, Italy",
+    "Paris, France",
+    "Swiss Alps, Switzerland",
+  ]
 
   const handleChipClick = (chipText: string) => {
     const clean = chipText.replace("✦", "").trim()
@@ -66,28 +81,37 @@ export function CuratedVoyageHome({ onTripSelect }: { onTripSelect?: (tripId: st
     )
   }
 
+  const handleDestinationChip = (destName: string) => {
+    const cleanDest = destName.split(",")[0].trim()
+    setDestination(cleanDest)
+  }
+
   const handleVoiceToggle = () => {
     if (!isListening) {
       setIsListening(true)
       setTimeout(() => {
         setIsListening(false)
+        setDestination("Bali")
         setPrompt(
-          "Private 3-day wellness charter around Greek Cyclades with dedicated chef and secluded coves."
+          "Private 5-day wellness sanctuary in Bali with dedicated chef and secluded sunset villas."
         )
-      }, 2500)
+      }, 2000)
     } else {
       setIsListening(false)
     }
   }
 
-  const handleCurate = () => {
-    if (!prompt.trim()) return
+  const handleProceed = () => {
+    const targetDest = destination.trim() || (prompt.toLowerCase().includes("kyoto") ? "Kyoto" : prompt.toLowerCase().includes("amalfi") ? "Amalfi Coast" : prompt.toLowerCase().includes("paris") ? "Paris" : "Bali")
     setIsCurating(true)
     setTimeout(() => {
       setIsCurating(false)
-      setPrompt("")
-      onTripSelect?.("bali")
-    }, 1200)
+      if (onStartCalibration) {
+        onStartCalibration(targetDest)
+      } else if (onTripSelect) {
+        onTripSelect(targetDest.toLowerCase().includes("kyoto") ? "kyoto" : targetDest.toLowerCase().includes("amalfi") ? "amalfi" : "bali")
+      }
+    }, 400)
   }
 
   return (
@@ -112,11 +136,11 @@ export function CuratedVoyageHome({ onTripSelect }: { onTripSelect?: (tripId: st
           of going?
         </h1>
         <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-          Tell me your idea. I'll turn it into an effortless luxury trip.
+          Specify your destination. Our private AI concierge will calibrate your bespoke itinerary step-by-step.
         </p>
       </div>
 
-      {/* 2. Bespoke Concierge Input Card */}
+      {/* 2. Destination Intake & Bespoke Concierge Input Card */}
       <div className="relative w-full">
         <div
           aria-hidden="true"
@@ -128,33 +152,91 @@ export function CuratedVoyageHome({ onTripSelect }: { onTripSelect?: (tripId: st
             <div className="flex items-center gap-2 text-primary">
               <Sparkles className="w-5 h-5 text-primary" />
               <span className="text-xs font-semibold tracking-wide">
-                HappyTrip Bespoke Concierge
+                AURA Bespoke Atelier
               </span>
             </div>
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/60 border border-border/40">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary" />
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
               <span className="text-[9px] font-semibold text-secondary uppercase tracking-widest">
                 Private Line
               </span>
             </div>
           </div>
 
-          {/* Textarea */}
+          {/* Destination Input Field */}
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="destination-input" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Destination
+            </label>
+            <div className="flex items-center gap-2 bg-background/70 border border-border/50 rounded-xl px-3 py-2.5 focus-within:border-primary/60 transition-colors">
+              <span className="material-symbols-outlined text-primary text-[18px]">
+                location_on
+              </span>
+              <input
+                id="destination-input"
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleProceed()
+                }}
+                placeholder="e.g. Bali, Kyoto, Amalfi Coast, Paris..."
+                className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground/60 text-sm focus:outline-none font-medium"
+              />
+              {destination && (
+                <button
+                  type="button"
+                  onClick={() => setDestination("")}
+                  className="text-[11px] text-muted-foreground hover:text-foreground px-1"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Quick Destination Chips */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pt-1 pb-0.5 no-scrollbar">
+              {POPULAR_DESTINATIONS.map((d) => {
+                const shortName = d.split(",")[0]
+                const isActive = destination.toLowerCase() === shortName.toLowerCase()
+                return (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => handleDestinationChip(d)}
+                    className={`shrink-0 px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all ${
+                      isActive
+                        ? "bg-primary/20 text-primary border-primary/40 shadow-sm"
+                        : "bg-surface-container/60 hover:bg-surface-container text-muted-foreground hover:text-foreground border-border/40"
+                    }`}
+                  >
+                    {shortName}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Additional Notes or Details (Optional) */}
           <div className="relative">
+            <label htmlFor="wishes-input" className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1 block">
+              Voyage Aspirations (Optional)
+            </label>
             <textarea
+              id="wishes-input"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder={
                 isListening
-                  ? "Listening to your voyage preferences in Mayfair English..."
-                  : "Plan a 5-day escape to Bali with private beach clubs, local temple dining, and relaxed luxury pace..."
+                  ? "Listening to your voyage aspirations..."
+                  : "e.g., 5-day escape with private cliffside villa, sunset dining & relaxed cadence..."
               }
-              rows={3}
-              className="w-full bg-transparent text-foreground placeholder:text-muted-foreground/60 text-sm resize-none focus:outline-none leading-relaxed"
+              rows={2}
+              className="w-full bg-background/50 border border-border/40 rounded-xl p-2.5 text-foreground placeholder:text-muted-foreground/50 text-xs resize-none focus:outline-none focus:border-primary/50 leading-relaxed"
             />
           </div>
 
-          {/* Actions Bar */}
+          {/* Actions Bar with Proceed / Arrow Button */}
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
               <button
@@ -180,20 +262,21 @@ export function CuratedVoyageHome({ onTripSelect }: { onTripSelect?: (tripId: st
 
             <button
               type="button"
-              onClick={handleCurate}
-              aria-label="Curate journey"
+              id="proceed-calibration-btn"
+              onClick={handleProceed}
+              aria-label="Proceed to Calibration"
               disabled={isCurating}
-              className="flex items-center justify-center gap-1.5 pl-4 pr-3.5 py-2.5 rounded-full bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground text-xs font-semibold shadow-[0_4px_16px_rgba(242,202,80,0.3)] active:scale-95 transition-transform"
+              className="flex items-center justify-center gap-2 pl-5 pr-4 py-2.5 rounded-full bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground text-xs font-semibold shadow-[0_4px_16px_rgba(242,202,80,0.3)] hover:brightness-105 active:scale-95 transition-all group"
             >
               {isCurating ? (
                 <>
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  <span>Drafting...</span>
+                  <span>Connecting...</span>
                 </>
               ) : (
                 <>
-                  <span>Curate</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>Proceed</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </>
               )}
             </button>

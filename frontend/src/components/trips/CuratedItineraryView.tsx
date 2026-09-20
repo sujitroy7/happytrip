@@ -28,8 +28,10 @@ const DAYS = [
 
 export function CuratedItineraryView({
   onCustomizeClick,
+  destination = "Bali",
 }: {
   onCustomizeClick?: () => void
+  destination?: string
 }) {
   const [selectedDay, setSelectedDay] = useState(1)
   const [isSaved, setIsSaved] = useState(false)
@@ -50,10 +52,10 @@ export function CuratedItineraryView({
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
         </div>
         <h1 className="font-display text-3xl sm:text-4xl font-normal tracking-tight text-foreground">
-          Your Bali Escape
+          Your {destination} Escape
         </h1>
         <p className="font-display text-sm sm:text-base italic text-primary font-normal tracking-wide">
-          4 Days • Balanced Pace • Beach + Culture + Gastronomy
+          5 Days • Balanced Cadence • Sanctuary &amp; Gastronomy
         </p>
       </section>
 
